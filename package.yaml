@@ -1,0 +1,123 @@
+name: geos
+version: 0.2.2
+license: BSD3
+author: Peter France
+maintainer: pfrance@gmail.com
+category: Geometry
+build-type: Simple
+
+extra-source-files:
+- cbits/noticehandlers.h
+
+verbatim: |
+    Flag Debug
+        description: Enable Debug Logging
+        default: False
+
+library:
+    includes: geos_c
+    extra-libraries:
+    - geos_c
+    when:
+    - condition: flag(debug)
+      then: 
+       cc-options: -fPIC -DDEBUG
+      else: 
+       cc-options: -fPIC
+    c-sources: cbits/noticehandlers.c
+    include-dirs: 
+    - cbits
+    source-dirs: src
+    dependencies:
+    - base 
+    - bytestring
+    - vector
+    - transformers
+    - mtl
+    build-tools: hsc2hs
+    exposed-modules:
+    - Data.Geometry.Geos.Topology
+    - Data.Geometry.Geos.Geometry
+    - Data.Geometry.Geos.Serialize
+    - Data.Geometry.Geos.Buffer
+    - Data.Geometry.Geos.Prepared
+    - Data.Geometry.Geos.STRTree
+    - Data.Geometry.Geos.Relatable
+    other-modules:
+    - Data.Geometry.Geos.Raw.Base
+    - Data.Geometry.Geos.Raw.CoordSeq
+    - Data.Geometry.Geos.Raw.Geometry
+    - Data.Geometry.Geos.Raw.Serialize
+    - Data.Geometry.Geos.Raw.Topology
+    - Data.Geometry.Geos.Raw.Buffer
+    - Data.Geometry.Geos.Raw.Prepared
+    - Data.Geometry.Geos.Raw.Internal
+    - Data.Geometry.Geos.Raw.STRTree
+    default-extensions:
+    - LambdaCase
+    - GADTs
+    - ExistentialQuantification
+    - DeriveDataTypeable
+    - RankNTypes
+    - DataKinds
+    - KindSignatures
+    ghc-options:
+    - "-Wall"
+ 
+tests:
+    test-suite:
+        includes: geos_c
+        extra-libraries:
+        - geos_c
+        when:
+        - condition: flag(debug)
+          then: 
+           cc-options: -fPIC -DDEBUG
+          else: 
+           cc-options: -fPIC
+        c-sources: cbits/noticehandlers.c
+        #include-dirs: 
+        # - cbits
+        source-dirs: tests src
+        main: Main.hs
+        dependencies:
+        - base 
+        - bytestring
+        - vector
+        - transformers
+        - mtl
+        - geos
+        - hspec
+        - cassava
+        build-tools: hsc2hs
+        other-modules:
+        - Data.Geometry.Geos.Topology
+        - Data.Geometry.Geos.Geometry
+        - Data.Geometry.Geos.Serialize
+        - Data.Geometry.Geos.Buffer
+        - Data.Geometry.Geos.Prepared
+        - Data.Geometry.Geos.STRTree
+        - Data.Geometry.Geos.Relatable
+        - Data.Geometry.Geos.Raw.Base
+        - Data.Geometry.Geos.Raw.CoordSeq
+        - Data.Geometry.Geos.Raw.Geometry
+        - Data.Geometry.Geos.Raw.Serialize
+        - Data.Geometry.Geos.Raw.Topology
+        - Data.Geometry.Geos.Raw.Buffer
+        - Data.Geometry.Geos.Raw.Prepared
+        - Data.Geometry.Geos.Raw.Internal
+        - Data.Geometry.Geos.Raw.STRTree
+        - ParsingSpec
+        - RawGeometrySpec
+        - SpatialOperationsSpec
+        - SpecSampleData
+        default-extensions:
+        - LambdaCase
+        - GADTs
+        - ExistentialQuantification
+        - DeriveDataTypeable
+        - RankNTypes
+        - DataKinds
+        - KindSignatures
+        ghc-options:
+        - "-Wall"
